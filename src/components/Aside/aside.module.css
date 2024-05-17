@@ -1,0 +1,11 @@
+.aside {
+  background: #171D1F;
+  boder-radius: 8px;
+
+  padding: 40px 16px;
+  width: 178px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
