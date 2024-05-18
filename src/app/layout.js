@@ -18,10 +18,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={prompt.className}>
       <body>
-        <main className="container">
+        <div className="container">
           <Aside />
           {children}
-        </main>
+        </div>
       </body>
     </html>
   );
