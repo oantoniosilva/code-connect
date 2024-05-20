@@ -1,6 +1,6 @@
+import "./globals.css";
 import { Prompt } from "next/font/google"
 
-import "./globals.css";
 import { Aside } from "@/components/Aside";
 
 const prompt = Prompt({
@@ -19,8 +19,12 @@ export default function RootLayout({ children }) {
     <html lang="en" className={prompt.className}>
       <body>
         <div className="container">
-          <Aside />
-          {children}
+          <div>
+            <Aside />
+          </div>
+          <div className="main-content">
+            {children}
+          </div>
         </div>
       </body>
     </html>
