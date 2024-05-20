@@ -1,24 +1,48 @@
-import { logger } from "@/logger"
+import { logger } from "@/logger";
+import { remark } from "remark";
+import html from "remark-html";
+
+import styles from "./page.module.css"
+import { CardPost } from "@/components/CardPost";
 
 async function getPostBySlug(slug) {
-  const url = `http://localhost:3042/posts?slug=${slug}`
-  const response = await fetch(url)
+  const url = `http://localhost:3042/posts?slug=${slug}`;
+  const response = await fetch(url);
   if (!response.ok) {
-    logger.error("Posts not found!")
-    return {}
+    logger.error("Posts not found!");
+    return {};
   }
-  logger.info("Posts successfully obtained.")
-  
-  const data = await response.json()
+  logger.info("Posts successfully obtained.");
+
+  const data = await response.json();
 
   if (data.length == 0) {
-    return {}
+    return {};
   }
-  return data[0]
+  const post = data[0];
+
+  const processedContent = await remark()
+    .use(html)
+    .process(post.markdown);
+  const contentHtml = processedContent.toString();
+
+  post.markdown = contentHtml
+
+  return post;
 }
 
 export default async function Posts({ params }) {
-  const post = getPostBySlug(params.slug)
+  const post = await getPostBySlug(params.slug);
 
-  return <h1>Posts</h1>
+  return (
+    <div>
+      <CardPost post={post} highlight />
+
+      <h3 className={styles.subtitle}>Código:</h3>      
+      <div className={styles.code}>
+        <div dangerouslySetInnerHTML={{ __html: post.markdown }} />
+      </div>
+    </div>
+  );
 }
+
